@@ -1,0 +1,60 @@
+provider "aws" {
+    access_key = "AKIASNYNUCLK7H6BMQUK"
+    secret_key = "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"
+    region = "us-east-2"
+
+
+resource "aws_key_pair" "sshkey" {
+  key_name   = "tkey"
+  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDjyZAUWIbj2phSKAIZijl0+nlg29bvVn7EgJ19r35OBSTYTY/pgFY6c9hmZzgwwu9Xmy3kiJuA0XMiHPJTAbj5mSDeSyZlzjvqdCJpmvlufJdsGKSnzMplCEpl/5ymvkLvN2mxaWs3u90RTvLAmsqSa8z+eayJ4bg2J/UPRzcNM4eP9JvkFUC2c/or1Fmd9+YWma3+C4a1n+Wocy0XvBYhXnpvrILtmlVcPilCH6hxuH8S3/OCjTfJh56CLKEHkA1lWHkGGSUCL8wcWVoV468AhITBPf7RGMGBoqmIS4dGhzdavpoEsMvK7rIrC1rG8hU9QdYW1yz9Tv8aWMJTJyHB+wR7WIhsietrgkrogCRzuIq8FNMoKn29qiT0cIObXhoHlottN5Fryz0b/hMwvcrtViEXZSH5hkToIvL+EGvxSmpKgaXwyDtROCu4UPUAlUuiIlnZi+8vdX3udtlwekwtNH9GBLcFc2dyd8w6LtBIqBIgINM72PMbcY+KGAwoUPs= jobin@linuxtech"
+}
+
+
+resource "aws_security_group" "webserver" {
+
+    name         = "webserver"
+    description  = "allows 80 from all"
+
+    ingress {
+        cidr_blocks = ["0.0.0.0/0"]  
+        from_port   = 80
+        to_port     = 80
+        protocol    = "tcp"
+      }
+
+     egress {
+        from_port       = 0
+        to_port         = 0
+        protocol        = "-1"
+        cidr_blocks     = ["0.0.0.0/0"]
+    }
+
+    tags = {
+        Name = "webserver"
+    }
+}    
+
+
+resource "aws_security_group" "ssh" {
+
+    name         = "ssh"
+    description  = "allows 22 from all"
+
+    ingress {
+        cidr_blocks = ["0.0.0.0/0"]  
+        from_port   = 22
+        to_port     = 22
+        protocol    = "tcp"
+      }
+
+     egress {
+        from_port       = 0
+        to_port         = 0
+        protocol        = "-1"
+        cidr_blocks     = ["0.0.0.0/0"]
+    }
+
+    tags = {
+        Name = "ssh"
+    }
+}    
